@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>古文今讀 21–25 課　虛字整理與選擇題</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1f2a1f; --muted: #6b7280; --accent: #385723; --accent-bg: #e2efda;
+    --line: #a6a6a6; --row: #f7f7f7; --hl: #c00000; --blue: #ddebf7; --orange: #fce4d6;
+    --ok: #2e7d32; --ok-bg: #e3f2e1; --bad: #c62828; --bad-bg: #fdeaea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161a16; --fg: #e8ece8; --muted: #9aa39a; --accent: #a9d18e; --accent-bg: #253323;
+      --line: #4a544a; --row: #1e241e; --hl: #ff8a80; --blue: #1f3040; --orange: #40291f;
+      --ok: #81c784; --ok-bg: #1f3a21; --bad: #ef9a9a; --bad-bg: #3f2222;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: "DFKai-SB", "BiauKai", "標楷體", "Noto Serif TC", "Songti TC", serif;
+    font-size: 17px; line-height: 1.7;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { text-align: center; color: var(--accent); font-size: 1.9rem; margin: 8px 0 2px; }
+  .subtitle { text-align: center; font-size: 1.35rem; font-weight: bold; margin: 0 0 6px; }
+  .lessons-line, .legend { text-align: center; color: var(--muted); font-size: .85rem; margin: 2px 0; }
+  nav.toc { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px 0 6px; }
+  nav.toc a {
+    text-decoration: none; color: var(--accent); background: var(--accent-bg);
+    padding: 4px 12px; border-radius: 999px; font-size: .9rem;
+  }
+  h2 {
+    color: var(--accent); font-size: 1.45rem; margin: 28px 0 10px; padding-bottom: 2px;
+    border-bottom: 2px solid #548235; scroll-margin-top: 12px;
+  }
+  h3 { font-size: 1.1rem; margin: 16px 0 6px; }
+  h3.lesson { background: var(--accent-bg); color: var(--accent); padding: 4px 10px; border-radius: 4px; margin-top: 22px; }
+  h3.lesson small { font-weight: normal; color: var(--muted); font-size: .8rem; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid var(--line); padding: 5px 10px; vertical-align: middle; }
+  table.meaning thead th { background: var(--accent-bg); text-align: center; font-size: .95rem; }
+  table.meaning.blue thead th { background: var(--blue); }
+  table.meaning.orange thead th { background: var(--orange); }
+  table.meaning tbody th { background: var(--row); width: 9.5em; text-align: center; font-size: .95rem; white-space: nowrap; }
+  .ex { font-size: .98rem; padding: 1px 0; }
+  .src { color: var(--muted); font-size: .75rem; margin-left: .3em; }
+  .hl { color: var(--hl); font-weight: bold; }
+  .note { font-size: .95rem; margin: 8px 0; }
+  .infoline { text-align: center; margin: 6px 0 10px; }
+  .printonly { display: none; }
+  .bar {
+    position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+    background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 0; margin: 10px 0 0;
+    font-family: system-ui, -apple-system, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; font-size: .88rem;
+  }
+  .bar .modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .bar button { font: inherit; color: var(--fg); background: var(--bg); border: 0; padding: 6px 12px; cursor: pointer; }
+  .bar .seg.on { background: var(--accent); color: var(--bg); }
+  .bar .stats { flex: 1 1 auto; min-width: 9em; }
+  .bar .acts { display: inline-flex; gap: 6px; }
+  .bar .act { border: 1px solid var(--line); border-radius: 8px; }
+  .bar .act#submit { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .bar button:focus-visible, button.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.opt {
+    width: 100%; text-align: left; font: inherit; color: inherit; background: transparent; cursor: pointer;
+    border: 1px solid transparent; border-radius: 8px; padding: 3px 8px; margin: 1px 0; line-height: 1.6;
+  }
+  button.opt:hover { background: var(--accent-bg); }
+  button.opt.sel { background: var(--accent-bg); border-color: var(--accent); }
+  button.opt.right { background: var(--ok-bg); border-color: var(--ok); }
+  button.opt.wrong { background: var(--bad-bg); border-color: var(--bad); }
+  button.opt .mark { margin-left: .4em; font-weight: bold; font-family: system-ui, sans-serif; }
+  button.opt.right .mark { color: var(--ok); }
+  button.opt.wrong .mark { color: var(--bad); }
+  li.q.done button.opt { cursor: default; }
+  li.q.done button.opt:hover:not(.right):not(.wrong) { background: transparent; }
+  .exp { margin: 4px 0 0 2.4em; padding: 6px 10px; border-radius: 8px; background: var(--row); font-size: .93rem; line-height: 1.6; }
+  .exp .res { margin-right: .5em; font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif; }
+  .exp.ok .res { color: var(--ok); }
+  .exp.no .res { color: var(--bad); }
+  .sec-score { font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif; font-size: .9rem; color: var(--muted); margin: 4px 0 0; }
+
+  .rule { font-weight: bold; margin: 8px 0; }
+  ol.qs { list-style: none; counter-reset: q; padding: 0; margin: 0; }
+  li.q { counter-increment: q; margin: 10px 0 14px; break-inside: avoid; page-break-inside: avoid; }
+  li.q .stem::before { content: "（　　）" counter(q) ". "; white-space: pre; }
+  li.q .stem { padding-left: 0; }
+  ul.opts { list-style: none; margin: 2px 0 0 2.4em; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1em; }
+  ul.opts.one { grid-template-columns: 1fr; }
+  ul.opts .lab { margin-right: .2em; }
+  u { text-underline-offset: 3px; }
+  details.answers { margin-top: 10px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; }
+  details.answers > summary { cursor: pointer; font-weight: bold; color: var(--accent); font-size: 1.05rem; padding: 4px 0; }
+  table.key thead th { background: var(--accent-bg); }
+  table.key td.c { text-align: center; white-space: nowrap; }
+  table.key td.ans { color: var(--hl); font-weight: bold; }
+  table.key { font-size: .95rem; }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 36px; }
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    ul.opts { grid-template-columns: 1fr; margin-left: 1.6em; }
+    .exp { margin-left: 1.6em; }
+    .bar .stats { flex-basis: 100%; order: 3; }
+    table.meaning tbody th { width: 6.5em; white-space: normal; }
+  }
+  @media print {
+    body { font-size: 12pt; }
+    main { max-width: none; padding: 0; }
+    nav.toc, .bar, .exp, .sec-score { display: none !important; }
+    .printonly { display: block; }
+    button.opt { border: 0; padding: 0; }
+    h2.newpage { page-break-before: always; }
+    h2, h3 { page-break-after: avoid; }
+    tr { page-break-inside: avoid; }
+    .tablewrap { overflow: visible; }
+    details.answers { border: none; padding: 0; }
+  }
+
+  .poem { text-align: center; margin: 8px 0 12px; font-size: 1.15rem; line-height: 1.9; }
+  .poem p { margin: 0; }
+  .poem .hl { font-size: 1.5rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>古文今讀 第 21–25 課</h1>
+  <p class="subtitle">虛字整理：汝爾子若君卿、吾予余愚某僕、之、於、何如弗俄而汝曹清旦徒</p>
+  <p class="lessons-line">第21課 自相矛盾　第22課 師曠論學　第23課 阿豺折箭　第24課 名落孫山　第25課 齊人攫金</p>
+  <p class="legend">出處：簡報＝老師簡報例句；課本標註＝課本旁註所列；補充＝整理時另加的用法</p>
+  <p class="legend">互動版（可直接點選作答）｜<a href="static.html">前往講義版（可列印）</a></p>
+  <nav class="toc" aria-label="目錄">
+    <a href="#handout">虛字整理</a>
+    <a href="#notes">各課重點</a>
+    <a href="#practice">虛字練習</a>
+    <a href="#lessonqs">課文選擇題</a>
+    <a href="#answers">參考答案</a>
+  </nav>
+  <div class="bar" id="bar" role="region" aria-label="作答控制">
+    <div class="modes" role="group" aria-label="作答模式">
+      <button type="button" id="m-practice" class="seg on" aria-pressed="true">即時對答案</button>
+      <button type="button" id="m-test" class="seg" aria-pressed="false">交卷模式</button>
+    </div>
+    <div class="stats" id="stats" aria-live="polite">已作答 0／41　答對 0</div>
+    <div class="acts">
+      <button type="button" id="submit" class="act" hidden>交卷</button>
+      <button type="button" id="reset" class="act">重新作答</button>
+    </div>
+  </div>
+  <section id="handout">
+    <h2>一、汝、爾、子、若、君、卿（你）</h2>
+    <div class="tablewrap"><table class="meaning"><thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead><tbody><tr><th scope="row">你，代詞</th><td><div class="ex">「<span class="hl">汝</span>」取十九支箭折之<span class="src">（第23課，課本標註）</span></div><div class="ex">「<span class="hl">汝</span>」各獻吾一支箭<span class="src">（第23課，補充）</span></div><div class="ex">「<span class="hl">汝</span>」等各奉吾一支箭<span class="src">（第23課，補充）</span></div></td></tr></tbody></table></div>
+    <p class="note">汝＝爾＝子＝若＝君＝卿，都是「你」的意思（課本標註）。</p>
+    <h2>二、吾、予、余、愚、某、僕、老夫（我）</h2>
+    <div class="tablewrap"><table class="meaning blue"><thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead><tbody><tr><th scope="row">我，代詞</th><td><div class="ex">以子之矛，陷子之盾，何如？「<span class="hl">吾</span>」盾之堅，物莫能陷也<span class="src">（第21課，課本標註）</span></div><div class="ex">「<span class="hl">吾</span>」矛之利，於物無不陷也<span class="src">（第21課，課本標註）</span></div><div class="ex">「<span class="hl">吾</span>」年七十，欲學<span class="src">（第22課，課本標註）</span></div></td></tr></tbody></table></div>
+    <p class="note">予＝余＝吾，都是「我」的意思；愚＝某＝僕，是自謙的說法（課本標註，各課通用）。</p>
+    <h2>三、之</h2>
+    <div class="tablewrap"><table class="meaning orange"><thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead><tbody><tr><th scope="row">助詞，的</th><td><div class="ex">以子「<span class="hl">之</span>」矛，陷子「<span class="hl">之</span>」盾<span class="src">（第21課，課本標註）</span></div><div class="ex">鬻金者「<span class="hl">之</span>」所<span class="src">（第25課，注釋，＝……的地方）</span></div></td></tr><tr><th scope="row">助詞，無意義（用於主謂之間）</th><td><div class="ex">賢郎更在孫山外（省略「<span class="hl">之</span>」外）<span class="src">（第24課，補充）</span></div></td></tr><tr><th scope="row">動詞，到、往</th><td><div class="ex">衣冠而「<span class="hl">之</span>」市<span class="src">（第25課，注釋⑥、課本標註）</span></div></td></tr><tr><th scope="row">代詞</th><td><div class="ex">譽「<span class="hl">之</span>」曰（指盾／矛）<span class="src">（第21課，課本標註）</span></div><div class="ex">吏捕得「<span class="hl">之</span>」（指攫金的人）<span class="src">（第25課，課本標註）</span></div></td></tr></tbody></table></div>
+    <p class="note">「之」是助詞時，多翻成「的」或不必翻譯；是動詞時，意思是「到、往」；是代詞時，要依上下文找出它指的人、事、物。</p>
+    <h2>四、於</h2>
+    <div class="tablewrap"><table class="meaning blue"><thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead><tbody><tr><th scope="row">向</th><td><div class="ex">晉平公問「<span class="hl">於</span>」師曠<span class="src">（第22課，課本標註）</span></div></td></tr><tr><th scope="row">複習：對於／在／比／給／被</th><td><div class="ex">苛政猛「<span class="hl">於</span>」虎（比）、己所不欲，勿施「<span class="hl">於</span>」人（給）<span class="src">（複習，第18課）</span></div></td></tr></tbody></table></div>
+    <p class="note">「於」的常見用法：1.對於　2.向　3.在　4.比　5.給　6.被（置於動詞之後，表示被動）（課本標註，見11–20課整理）。</p>
+    <h2>五、其他常見虛字：何如、弗、俄而、汝曹、清旦、徒</h2>
+    <div class="tablewrap"><table class="meaning orange"><thead><tr><th>意義（詞性）</th><th>例句（出處）</th></tr></thead><tbody><tr><th scope="row">怎麼樣，疑問詞</th><td><div class="ex">以子之矛，陷子之盾，「<span class="hl">何如</span>」？<span class="src">（第21課，課本標註）</span></div></td></tr><tr><th scope="row">不，副詞</th><td><div class="ex">其人「<span class="hl">弗</span>」能應也<span class="src">（第21課，課本標註）</span></div></td></tr><tr><th scope="row">一會兒，副詞</th><td><div class="ex">「<span class="hl">俄而</span>」命母弟慕利延曰<span class="src">（第23課，注釋④）</span></div></td></tr><tr><th scope="row">你們，代詞</th><td><div class="ex">「<span class="hl">汝曹</span>」知否？<span class="src">（第23課，注釋⑥）</span></div></td></tr><tr><th scope="row">清早，名詞</th><td><div class="ex">「<span class="hl">清旦</span>」，衣冠而之市<span class="src">（第25課，注釋②）</span></div></td></tr><tr><th scope="row">只，副詞</th><td><div class="ex">不見人，「<span class="hl">徒</span>」見金<span class="src">（第25課，注釋⑩）</span></div></td></tr></tbody></table></div>
+    <p class="note">「何如」＝怎麼樣，常放在句末表示詢問；「弗」＝不，用法同「不」；「俄而」「頃之」「有頃」都表示「一會兒、不久」。</p>
+  </section>
+  <section id="notes">
+    <h2 class="newpage">各課重點</h2>
+    <h3 class="lesson">第21課　自相矛盾<small>　《韓非子》</small></h3>
+    <div class="tablewrap"><table class="meaning "><thead><tr><th>詞語</th><th>意思</th></tr></thead><tbody><tr><th scope="row">鬻</th><td>賣</td></tr><tr><th scope="row">盾</th><td>古兵器，用來抵禦敵人的刀劍或戈矛的刺擊，具防禦作用</td></tr><tr><th scope="row">矛</th><td>古兵器，長柄，有青銅或鐵製的利刃，用來刺、戳穿敵人，具攻擊作用</td></tr><tr><th scope="row">譽</th><td>誇讚</td></tr><tr><th scope="row">陷</th><td>刺穿</td></tr><tr><th scope="row">或</th><td>有人</td></tr><tr><th scope="row">何如</th><td>怎麼樣</td></tr><tr><th scope="row">應</th><td>回答</td></tr><tr><th scope="row">弗</th><td>不</td></tr></tbody></table></div>
+    <p class="note">原文：楚人有鬻盾與矛者，譽之曰：「吾盾之堅，物莫能陷也。」又譽其矛曰：「吾矛之利，於物無不陷也。」或曰：「以子之矛，陷子之盾，何如？」其人弗能應也。</p>
+    <p class="note">「矛」與「盾」一攻一守，性質相反：不可陷之盾與無不陷之矛，不可能同時存在，這正是矛盾之所在。</p>
+    <p class="note">成語「自相矛盾」：比喻言語或行事前後不一致，互相牴觸，無法自圓其說。</p>
+    <h3 class="lesson">第22課　師曠論學<small>　《說苑》</small></h3>
+    <div class="tablewrap"><table class="meaning "><thead><tr><th>詞語</th><th>意思</th></tr></thead><tbody><tr><th scope="row">師曠</th><td>春秋時期晉國樂師，字子野，雙目失明，以精通音律著稱</td></tr><tr><th scope="row">暮</th><td>晚</td></tr><tr><th scope="row">炳燭</th><td>點燃蠟燭</td></tr><tr><th scope="row">安</th><td>豈、怎麼（反問語氣）</td></tr><tr><th scope="row">孰與</th><td>比……怎麼樣</td></tr><tr><th scope="row">昧行</th><td>在黑暗中行走</td></tr><tr><th scope="row">盲臣</th><td>師曠自稱</td></tr></tbody></table></div>
+    <p class="note">原文：晉平公問於師曠曰：「吾年七十，欲學，恐已暮矣。」師曠曰：「何不炳燭乎？」平公曰：「安有為人臣而戲其君乎？」師曠曰：「盲臣安敢戲其君乎？臣聞之：少而好學，如日出之陽；壯而好學，如日中之光；老而好學，如炳燭之明。炳燭之明，孰與昧行乎？」平公曰：「善哉！」</p>
+    <p class="note">補充（墨子・所染）：蓬生麻中，不扶而直；白沙在涅，與之俱黑。入鮑魚之肆，久而不聞其臭；入芝蘭之室，久而不聞其香。染於蒼則蒼，染於黃則黃——比喻人的習性會因環境影響而改變，近朱者赤，近墨者黑。</p>
+    <p class="note">成語「炳燭之明」：比喻年老仍好學不倦。</p>
+    <h3 class="lesson">第23課　阿豺折箭<small>　《魏書》</small></h3>
+    <div class="tablewrap"><table class="meaning "><thead><tr><th>詞語</th><th>意思</th></tr></thead><tbody><tr><th scope="row">阿豺</th><td>南北朝時期西北邊境少數民族吐谷渾的首領</td></tr><tr><th scope="row">汝</th><td>你</td></tr><tr><th scope="row">俄而</th><td>一會兒</td></tr><tr><th scope="row">母弟</th><td>同母弟弟</td></tr><tr><th scope="row">汝曹</th><td>你們</td></tr><tr><th scope="row">摧</th><td>折斷</td></tr><tr><th scope="row">戮力</th><td>合力</td></tr><tr><th scope="row">社稷</th><td>國家的代稱</td></tr></tbody></table></div>
+    <p class="note">原文：阿豺有子二十人，臨終謂諸子曰：「汝等各獻吾一支箭。」一一折斷之。又謂母弟慕利延曰：「汝取一支箭折之。」慕利延折之。阿豺曰：「汝取十九支箭折之。」延不能折。阿豺乃曰：「汝曹知否？單者易折，眾則難摧。戮力一心，然後社稷可固。」</p>
+    <p class="note">智慧諺語：一虎難敵眾犬；三個臭皮匠，勝過一個諸葛亮——比喻集合眾人的思考、討論，力量可以獲得更廣大的效益。</p>
+    <p class="note">成語「戮力同心」：比喻齊心合力。</p>
+    <h3 class="lesson">第24課　名落孫山<small>　《過庭錄》</small></h3>
+    <div class="tablewrap"><table class="meaning "><thead><tr><th>詞語</th><th>意思</th></tr></thead><tbody><tr><th scope="row">孫山</th><td>宋朝吳地人，滑稽才子</td></tr><tr><th scope="row">滑稽</th><td>詼諧有趣的言語或動作</td></tr><tr><th scope="row">赴舉</th><td>參加鄉試</td></tr><tr><th scope="row">解名</th><td>鄉試錄取的名次；泛指考中舉人者的名字</td></tr><tr><th scope="row">失意</th><td>不如意，指未被錄取</td></tr></tbody></table></div>
+    <p class="note">宋朝時吳地有個人名叫孫山，是個幽默風趣又有才氣的讀書人。有一年，他和同鄉人的兒子一起到別郡參加鄉試，發榜後，孫山僥倖考中榜末，同鄉人的兒子卻落榜了。孫山先回到家，同鄉人問起自己兒子考得如何，孫山回答：「舉人榜單上最後一名是孫山，您的兒子還落在孫山的後面呢！」</p>
+    <p class="note">成語「名落孫山」：比喻投考未被錄取，榜上無名。</p>
+    <p class="note">文學常識（科舉制度）：童生 →（縣、府試）→ 秀才 →（鄉試）→ 舉人（第一名稱解元）→（會試）→ 貢士（第一名稱會元）→（殿試）→ 進士（第一名稱狀元）。古人所謂「連中三元」，就是指在鄉試、會試、殿試中都考取第一名。</p>
+    <h3 class="lesson">第25課　齊人攫金<small>　《列子》</small></h3>
+    <div class="tablewrap"><table class="meaning "><thead><tr><th>詞語</th><th>意思</th></tr></thead><tbody><tr><th scope="row">欲</th><td>想要</td></tr><tr><th scope="row">清旦</th><td>清早</td></tr><tr><th scope="row">衣冠</th><td>穿衣戴帽</td></tr><tr><th scope="row">適</th><td>到</td></tr><tr><th scope="row">鬻</th><td>出售</td></tr><tr><th scope="row">攫</th><td>抓取、搶奪</td></tr><tr><th scope="row">徒</th><td>只</td></tr></tbody></table></div>
+    <p class="note">原文：昔齊人有欲金者，清旦，衣冠而之市，適鬻金者之所，因攫其金而去。吏捕得之，問曰：「人皆在焉，子攫人之金何？」對曰：「取金之時，不見人，徒見金。」</p>
+    <p class="note">補充成語：目不見睫（比喻人無自知之明，不能看見自己的過失）、玩物喪志（一味玩賞無益的器物，因而消磨人的志向）、鼠目寸光（形容人目光短淺，識見狹小）、利慾薰心（被利慾迷惑，使得理智昏亂）、鋌而走險（在窮途末路或受逼迫時，採取冒險行動或不正當的行為）。</p>
+    <p class="note">名句精讀：《三國志》：「勿以惡小而為之，勿以善小而不為。」／《孟子》：「富貴不能淫，貧賤不能移，威武不能屈，此之謂大丈夫。」</p>
+    <h3>字音辨析</h3><div class="tablewrap"><table class="meaning "><thead><tr><th>字</th><th>讀音</th><th>例詞（出處）</th></tr></thead><tbody><tr><th scope="row">鬻</th><td>ㄩˋ</td><td>鬻盾與矛（賣，第21課）</td></tr><tr><th scope="row">譽</th><td>ㄩˋ</td><td>譽之曰（誇讚，第21課）</td></tr><tr><th scope="row">陷</th><td>ㄒㄧㄢˋ</td><td>物莫能陷也（刺穿，第21課）</td></tr><tr><th scope="row">暮</th><td>ㄇㄨˋ</td><td>恐已暮矣（第22課）</td></tr><tr><th scope="row">炳</th><td>ㄅㄧㄥˇ</td><td>炳燭之明（第22課）</td></tr><tr><th scope="row">昧</th><td>ㄇㄟˋ</td><td>孰與昧行乎（第22課）</td></tr><tr><th scope="row">俄</th><td>ㄜˊ</td><td>俄而命母弟（第23課）</td></tr><tr><th scope="row">戮</th><td>ㄌㄨˋ</td><td>戮力一心（第23課）</td></tr><tr><th scope="row">稷</th><td>ㄐㄧˋ</td><td>社稷可固（第23課）</td></tr><tr><th scope="row">赴</th><td>ㄈㄨˋ</td><td>赴舉他郡（第24課）</td></tr><tr><th scope="row">攫</th><td>ㄐㄩㄝˊ</td><td>攫其金而去（第25課）</td></tr></tbody></table></div>
+  </section>
+  <section id="practice">
+    <h2 class="newpage">古文今讀 21–25 課　虛字練習</h2>
+    <p class="infoline printonly">班級：＿＿＿＿　座號：＿＿＿＿　姓名：＿＿＿＿＿＿　　得分：＿＿＿＿</p>
+    <p class="rule">選擇題（每題 4 分，共 64 分）。粗體加底線的字為題目所問的字。直接點選答案作答。</p>
+<h3 class="lesson">虛字練習（課文中的虛字）</h3>
+<ol class="qs">
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">「<u><b>汝</b></u>取十九支箭折之」的「汝」，與下列哪一個字的意思「不同」？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 爾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 若<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 卿<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 吾<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">汝＝爾＝若＝卿，都是「你」；吾是「我」。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">「以子<u><b>之</b></u>矛，陷子<u><b>之</b></u>盾」的「之」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 他<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 去、往<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 這<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">以子之矛＝用你的矛，「之」是助詞，相當於「的」。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「衣冠而<u><b>之</b></u>市」的「之」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 的<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 到、往<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 他<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 這<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">衣冠而之市＝穿好衣服戴好帽子後前往市集，「之」是動詞，到、往。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「吏捕得<u><b>之</b></u>」的「之」，指的是誰？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 攫取金子的齊人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 賣金子的商人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 巡吏<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 圍觀的群眾<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">巡吏逮捕的，是那個伸手搶奪金子的齊人。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「晉平公問<u><b>於</b></u>師曠」的「於」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 在<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 向<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 比<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 被<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">問於師曠＝向師曠請教。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「以子之矛，陷子之盾，<u><b>何如</b></u>？」的「何如」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 怎麼樣<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 為什麼<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 什麼時候<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 在哪裡<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">何如＝怎麼樣，用來詢問結果或看法。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">「其人<u><b>弗</b></u>能應也」的「弗」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 才<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 已經<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 不<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 又<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">弗＝不，其人弗能應也＝那個人不能夠回答。</span></div></li>
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">「<u><b>俄而</b></u>命母弟慕利延曰」的「俄而」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 從此以後<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 突然<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 從前<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 一會兒<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">俄而＝一會兒，表示時間很短。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">阿豺對眾子說「<u><b>汝曹</b></u>知否」，「汝曹」是指誰？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 社伯<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 阿豺的兒子們<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 慕利延一人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 鄰國的使者<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">汝曹＝你們，指阿豺的眾多兒子。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「<u><b>清旦</b></u>，衣冠而之市」的「清旦」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 清早<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 深夜<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 傍晚<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 正午<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">清旦＝清早（注釋②）。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">「不見人，<u><b>徒</b></u>見金」的「徒」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 徒弟<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 白白地<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 只<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 步行<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">徒：只（注釋⑩）。取金之時，眼中只看見金子。</span></div></li>
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">「師曠曰：『<u><b>何不炳燭</b></u>乎？』」的意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 為什麼要點蠟燭呢<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 何時要點蠟燭呢<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 誰要點蠟燭呢<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 為什麼不點亮蠟燭呢<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">炳燭＝點燃蠟燭；何不……乎＝為什麼不……呢。</span></div></li>
+<li class="q" data-a="A" data-sec="v" data-pts="4"><div class="stem">「老而好學，如炳燭之明，<u><b>孰與</b></u>昧行乎？」的「孰與」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 比……怎麼樣<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 誰跟誰<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 應該跟隨<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 何必<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">孰與：比……怎麼樣，用來比較兩件事的優劣。</span></div></li>
+<li class="q" data-a="B" data-sec="v" data-pts="4"><div class="stem">「盲臣<u><b>安</b></u>敢戲其君乎？」的「安」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 安穩<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 豈、怎麼<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 安置<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 於是<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">安：豈、怎麼，用來加強反問語氣。</span></div></li>
+<li class="q" data-a="C" data-sec="v" data-pts="4"><div class="stem">下列「之」字用法，何者與其他三者「不同」？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 以子之矛<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 以子之盾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 衣冠而之市<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 陷子之盾<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「衣冠而之市」的「之」是動詞（到、往）；其餘三者的「之」都是助詞（的）。</span></div></li>
+<li class="q" data-a="D" data-sec="v" data-pts="4"><div class="stem">下列文句所表現的語氣，何者是「反問」？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 善哉，講得好啊<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 何不炳燭乎<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 安有為人臣而戲其君乎<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 取金之時，不見人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「安有為人臣而戲其君乎」用反問語氣，強調自己絕不敢戲弄君主。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="v"></p>
+<h3 class="lesson">成語、修辭與文學常識</h3>
+<ol class="qs" style="counter-reset: q 16">
+<li class="q" data-a="C" data-sec="c" data-pts="4"><div class="stem">後人以「自相矛盾」比喻什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 無意間顯露出自己的短處<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 太過自滿的人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 言語或行事前後無法呼應，互相牴觸<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 缺乏信用操守的人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">自相矛盾：說話或做事前後衝突，不能自圓其說（課本標註）。</span></div></li>
+<li class="q" data-a="B" data-sec="c" data-pts="4"><div class="stem">「少而好學，如日出之陽；壯而好學，如日中之光；老而好學，如炳燭之明」運用了哪兩種修辭？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 映襯、誇飾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 排比、層遞<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 借代、雙關<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 頂真、類疊<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">三句結構相同、依年齡層層推進，兼具排比與層遞。</span></div></li>
+<li class="q" data-a="A" data-sec="c" data-pts="4"><div class="stem">後人以「炳燭之明」比喻什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 老而好學<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 珍惜光陰<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 不厭其煩<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 不可輕忽怠慢<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">師曠以點燭之光比喻老年好學，仍能照亮前路（課本標註）。</span></div></li>
+<li class="q" data-a="D" data-sec="c" data-pts="4"><div class="stem">「單者易折，眾則難摧」與下列哪一句意思最接近？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 三人成虎<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 欲哭無淚<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 以子之矛，陷子之盾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 眾志成城<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">單一的箭容易折斷，聚集起來就難以摧毀，意近「眾志成城」。</span></div></li>
+<li class="q" data-a="B" data-sec="c" data-pts="4"><div class="stem">後人以「名落孫山」比喻什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 科舉題名的喜悅<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 投考未被錄取<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 考中舉人的最後一名<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 父母對子女的期許<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">孫山雖是榜末，仍算考中；「名落孫山」則專指落榜、未被錄取。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="c"></p>
+  </section>
+  <section id="lessonqs">
+    <h2 class="newpage">古文今讀 21–25 課　課文選擇題</h2>
+    <p class="infoline printonly">班級：＿＿＿＿　座號：＿＿＿＿　姓名：＿＿＿＿＿＿　　得分：＿＿＿＿</p>
+    <p class="rule">課文文意選擇題（每課 4 題，每題 5 分，共 100 分）。直接點選答案作答。</p>
+<h3 class="lesson">第21課　自相矛盾<small>　《韓非子》</small></h3>
+<ol class="qs">
+<li class="q" data-a="B" data-sec="l21" data-pts="5"><div class="stem">楚人先誇讚自己的盾牌堅固無比，接著又誇讚自己的長矛銳利無比，這樣的言論顯示了什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 缺乏見識，胡亂稱讚自己的貨品<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 只顧眼前利益，前後說法互相衝突而不自知<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 謙虛謹慎，實事求是<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 機智過人，善於推銷<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">楚人先說「物莫能陷」，又說「於物無不陷」，兩句話互相矛盾。</span></div></li>
+<li class="q" data-a="A" data-sec="l21" data-pts="5"><div class="stem">「以子之矛，陷子之盾，何如？」這句話的作用是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 提出質疑，讓楚人自相矛盾的說法露出破綻<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 嘲笑楚人的兵器太差<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 表示想購買楚人的矛和盾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 請楚人示範兵器的用法<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">有人用楚人自己的說法反問他，使矛盾之處無所遁形。</span></div></li>
+<li class="q" data-a="C" data-sec="l21" data-pts="5"><div class="stem">根據這則寓言，後人以「自相矛盾」比喻什麼樣的人？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 無意間顯露出自己短處的人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 太過自滿的人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 言語或行事前後互相牴觸，不能自圓其說的人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 缺乏信用操守的人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">楚人先譽盾又譽矛，前後說法無法並存，正是「自相矛盾」。</span></div></li>
+<li class="q" data-a="A" data-sec="l21" data-pts="5"><div class="stem">「其人弗能應也」的「應」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 回答<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 對付<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 適合<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 附和<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">應：回答。楚人被質問後，答不出話來。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l21"></p>
+<h3 class="lesson">第22課　師曠論學<small>　《說苑》</small></h3>
+<ol class="qs">
+<li class="q" data-a="B" data-sec="l22" data-pts="5"><div class="stem">在本文中，晉平公起初認為自己？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 每天都在求新知<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 年紀大了，不適合再學習了<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 聰明才智比年輕時更靈光<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 年紀越大，越要多讀書自我充實<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">平公說：「吾年七十，欲學，恐已暮矣」，認為自己年紀已大，學習恐怕太晚了。</span></div></li>
+<li class="q" data-a="D" data-sec="l22" data-pts="5"><div class="stem">從師曠對平公說的話中可以看出，他認為最重要的是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 年紀大小<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 時時多讀書<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 良師益友<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 向學的心<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">師曠以「少而好學」「壯而好學」「老而好學」層層說明，強調的是願不願意學習的心，而非年紀。</span></div></li>
+<li class="q" data-a="B" data-sec="l22" data-pts="5"><div class="stem">下列哪句話最切合本文主旨？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 不怕慢，只怕站<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 活到老，學到老<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 近朱者赤，近墨者黑<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 光陰似箭，歲月如梭<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">本文說明即使年老，仍可以透過學習照亮自己，正是「活到老，學到老」。</span></div></li>
+<li class="q" data-a="B" data-sec="l22" data-pts="5"><div class="stem">根據本文，後人便以「炳燭之明」來比喻？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 珍惜光陰<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 老而好學<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 不厭其煩<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 不可輕忽怠慢<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">師曠以點燃蠟燭比喻晚年學習，雖光亮微弱，仍勝過在黑暗中摸索前行。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l22"></p>
+<h3 class="lesson">第23課　阿豺折箭<small>　《魏書》</small></h3>
+<ol class="qs">
+<li class="q" data-a="A" data-sec="l23" data-pts="5"><div class="stem">下列哪一句最貼近本文的主旨？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 團結就是力量，金石為開<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 事實勝於雄辯<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 精誠所至，金石為開<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 明槍易躲，暗箭難防<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">阿豺藉折箭的比喻，說明眾人團結一心，力量就無法被摧毀。</span></div></li>
+<li class="q" data-a="B" data-sec="l23" data-pts="5"><div class="stem">阿豺臨終前教誨眾子折箭，是希望？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 兒子們允文允武<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 兒子們能兄弟齊心，共同穩固國家<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 兒子們以後要聽從叔叔慕利延的話<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 兒子們能各自獨當一面<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">阿豺說「戮力一心，然後社稷可固」，希望眾子同心協力，才能保國安邦。</span></div></li>
+<li class="q" data-a="B" data-sec="l23" data-pts="5"><div class="stem">「單者易折，眾則難摧」，意思最接近下列哪一個成語？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 三人成虎<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 眾志成城<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 隔岸觀火<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 各自為政<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">單一的箭容易折斷，聚在一起卻難以摧毀，意近「眾志成城」。</span></div></li>
+<li class="q" data-a="D" data-sec="l23" data-pts="5"><div class="stem">「俄而」的意思接近「不久」，下列何者「不可以」替換？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 剎那<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 須臾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 頃刻<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 三人成虎<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">剎那、須臾、頃刻都表示「一會兒、很短的時間」；三人成虎則比喻謠言惑眾，與時間無關。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l23"></p>
+<h3 class="lesson">第24課　名落孫山<small>　《過庭錄》</small></h3>
+<ol class="qs">
+<li class="q" data-a="B" data-sec="l24" data-pts="5"><div class="stem">本文中提到到別郡參加鄉試的人，一共有幾位？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 一位<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 二位<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 三位<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 沒有人參加<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">文中提到孫山與同鄉人的兒子，兩人一同赴別郡應試。</span></div></li>
+<li class="q" data-a="A" data-sec="l24" data-pts="5"><div class="stem">孫山用「解名盡處是孫山，賢郎更在孫山外」回答鄉人，是為了說明什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 自己僥倖考中最後一名，而鄉人的兒子連他都不如，已經落榜<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 自己根本沒有考中<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 鄉人的兒子考得比自己好<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 兩人這次都沒有去考試<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">孫山幽默委婉地告知鄉人：自己是榜上最後一名，鄉人之子則連孫山都比不上，已經落榜了。</span></div></li>
+<li class="q" data-a="B" data-sec="l24" data-pts="5"><div class="stem">本文主要是在敘述哪一種情境？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 科舉題名的喜悅<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 孫山以詼諧的說法，委婉道出鄉人之子落榜的實情<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 父母對子女過高的期許<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 鄉試制度的種種弊端<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">文章重點在孫山如何機智、幽默地把「落榜」這件難以啟齒的事說出口。</span></div></li>
+<li class="q" data-a="D" data-sec="l24" data-pts="5"><div class="stem">後人以「名落孫山」比喻什麼？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 考試得到最高分<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 名聲遠播四方<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 考中舉人的最後一名<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 投考未被錄取<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">「名落孫山」即比喻應考不中、榜上無名。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l24"></p>
+<h3 class="lesson">第25課　齊人攫金<small>　《列子》</small></h3>
+<ol class="qs">
+<li class="q" data-a="D" data-sec="l25" data-pts="5"><div class="stem">本文的主旨最可能是？</div><ul class="opts one"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 做了壞事情，一定會被別人發現<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 人窮志短，便會做出壞事<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 金錢是萬惡的根源，應該遠離金錢<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 諷刺被利慾蒙蔽了心智，因而不擇手段、不顧一切的人<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">齊人「取金之時，不見人，徒見金」，正是被利慾蒙蔽心智的寫照。</span></div></li>
+<li class="q" data-a="C" data-sec="l25" data-pts="5"><div class="stem">「攫金者」的「攫」是指？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 購買<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 欣賞<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 搶奪、抓取<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 遺失<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">攫：抓取、搶奪（注釋⑦）。</span></div></li>
+<li class="q" data-a="A" data-sec="l25" data-pts="5"><div class="stem">「不見人，徒見金」的「徒」，意思是？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 只<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 白白地<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 徒弟<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 步行<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">徒：只（注釋⑩）。齊人眼中只看見金子，看不見在場的人。</span></div></li>
+<li class="q" data-a="A" data-sec="l25" data-pts="5"><div class="stem">「吏捕得之」的「之」是指？</div><ul class="opts"><li><button type="button" class="opt" data-k="A"><span class="lab">(A)</span> 搶奪金子的齊人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="B"><span class="lab">(B)</span> 賣金子的商人<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="C"><span class="lab">(C)</span> 圍觀的市集群眾<span class="mark" aria-hidden="true"></span></button></li><li><button type="button" class="opt" data-k="D"><span class="lab">(D)</span> 巡邏的官吏<span class="mark" aria-hidden="true"></span></button></li></ul><div class="exp" hidden><b class="res"></b><span class="et">巡吏逮捕的對象，是那個伸手搶奪金子後逃跑的齊人。</span></div></li>
+</ol>
+<p class="sec-score" data-sec="l25"></p>
+  </section>
+  <section id="answers">
+    <h2 class="newpage">參考答案與解析</h2>
+    <details class="answers">
+      <summary>顯示參考答案與解析（老師用）</summary>
+      <h3>壹、虛字練習</h3>
+      <div class="tablewrap"><table class="key">
+<thead><tr><th>題號</th><th>答案</th><th>解析</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td class="c ans">D</td><td>汝＝爾＝若＝卿，都是「你」；吾是「我」。</td></tr><tr><td class="c">2</td><td class="c ans">C</td><td>以子之矛＝用你的矛，「之」是助詞，相當於「的」。</td></tr><tr><td class="c">3</td><td class="c ans">B</td><td>衣冠而之市＝穿好衣服戴好帽子後前往市集，「之」是動詞，到、往。</td></tr><tr><td class="c">4</td><td class="c ans">A</td><td>巡吏逮捕的，是那個伸手搶奪金子的齊人。</td></tr><tr><td class="c">5</td><td class="c ans">B</td><td>問於師曠＝向師曠請教。</td></tr><tr><td class="c">6</td><td class="c ans">A</td><td>何如＝怎麼樣，用來詢問結果或看法。</td></tr><tr><td class="c">7</td><td class="c ans">C</td><td>弗＝不，其人弗能應也＝那個人不能夠回答。</td></tr><tr><td class="c">8</td><td class="c ans">D</td><td>俄而＝一會兒，表示時間很短。</td></tr><tr><td class="c">9</td><td class="c ans">B</td><td>汝曹＝你們，指阿豺的眾多兒子。</td></tr><tr><td class="c">10</td><td class="c ans">A</td><td>清旦＝清早（注釋②）。</td></tr><tr><td class="c">11</td><td class="c ans">C</td><td>徒：只（注釋⑩）。取金之時，眼中只看見金子。</td></tr><tr><td class="c">12</td><td class="c ans">D</td><td>炳燭＝點燃蠟燭；何不……乎＝為什麼不……呢。</td></tr><tr><td class="c">13</td><td class="c ans">A</td><td>孰與：比……怎麼樣，用來比較兩件事的優劣。</td></tr><tr><td class="c">14</td><td class="c ans">B</td><td>安：豈、怎麼，用來加強反問語氣。</td></tr><tr><td class="c">15</td><td class="c ans">C</td><td>「衣冠而之市」的「之」是動詞（到、往）；其餘三者的「之」都是助詞（的）。</td></tr><tr><td class="c">16</td><td class="c ans">D</td><td>「安有為人臣而戲其君乎」用反問語氣，強調自己絕不敢戲弄君主。</td></tr>
+</tbody></table></div>
+      <h3>貳、成語、修辭與文學常識</h3>
+      <div class="tablewrap"><table class="key">
+<thead><tr><th>題號</th><th>答案</th><th>解析</th></tr></thead>
+<tbody>
+<tr><td class="c">1</td><td class="c ans">C</td><td>自相矛盾：說話或做事前後衝突，不能自圓其說（課本標註）。</td></tr><tr><td class="c">2</td><td class="c ans">B</td><td>三句結構相同、依年齡層層推進，兼具排比與層遞。</td></tr><tr><td class="c">3</td><td class="c ans">A</td><td>師曠以點燭之光比喻老年好學，仍能照亮前路（課本標註）。</td></tr><tr><td class="c">4</td><td class="c ans">D</td><td>單一的箭容易折斷，聚集起來就難以摧毀，意近「眾志成城」。</td></tr><tr><td class="c">5</td><td class="c ans">B</td><td>孫山雖是榜末，仍算考中；「名落孫山」則專指落榜、未被錄取。</td></tr>
+</tbody></table></div>
+      <h3>參、課文選擇題（題號：課次－題號）</h3>
+      <div class="tablewrap"><table class="key">
+<thead><tr><th>題號</th><th>答案</th><th>解析</th></tr></thead>
+<tbody>
+<tr><td class="c">21－1</td><td class="c ans">B</td><td>楚人先說「物莫能陷」，又說「於物無不陷」，兩句話互相矛盾。</td></tr><tr><td class="c">21－2</td><td class="c ans">A</td><td>有人用楚人自己的說法反問他，使矛盾之處無所遁形。</td></tr><tr><td class="c">21－3</td><td class="c ans">C</td><td>楚人先譽盾又譽矛，前後說法無法並存，正是「自相矛盾」。</td></tr><tr><td class="c">21－4</td><td class="c ans">A</td><td>應：回答。楚人被質問後，答不出話來。</td></tr><tr><td class="c">22－1</td><td class="c ans">B</td><td>平公說：「吾年七十，欲學，恐已暮矣」，認為自己年紀已大，學習恐怕太晚了。</td></tr><tr><td class="c">22－2</td><td class="c ans">D</td><td>師曠以「少而好學」「壯而好學」「老而好學」層層說明，強調的是願不願意學習的心，而非年紀。</td></tr><tr><td class="c">22－3</td><td class="c ans">B</td><td>本文說明即使年老，仍可以透過學習照亮自己，正是「活到老，學到老」。</td></tr><tr><td class="c">22－4</td><td class="c ans">B</td><td>師曠以點燃蠟燭比喻晚年學習，雖光亮微弱，仍勝過在黑暗中摸索前行。</td></tr><tr><td class="c">23－1</td><td class="c ans">A</td><td>阿豺藉折箭的比喻，說明眾人團結一心，力量就無法被摧毀。</td></tr><tr><td class="c">23－2</td><td class="c ans">B</td><td>阿豺說「戮力一心，然後社稷可固」，希望眾子同心協力，才能保國安邦。</td></tr><tr><td class="c">23－3</td><td class="c ans">B</td><td>單一的箭容易折斷，聚在一起卻難以摧毀，意近「眾志成城」。</td></tr><tr><td class="c">23－4</td><td class="c ans">D</td><td>剎那、須臾、頃刻都表示「一會兒、很短的時間」；三人成虎則比喻謠言惑眾，與時間無關。</td></tr><tr><td class="c">24－1</td><td class="c ans">B</td><td>文中提到孫山與同鄉人的兒子，兩人一同赴別郡應試。</td></tr><tr><td class="c">24－2</td><td class="c ans">A</td><td>孫山幽默委婉地告知鄉人：自己是榜上最後一名，鄉人之子則連孫山都比不上，已經落榜了。</td></tr><tr><td class="c">24－3</td><td class="c ans">B</td><td>文章重點在孫山如何機智、幽默地把「落榜」這件難以啟齒的事說出口。</td></tr><tr><td class="c">24－4</td><td class="c ans">D</td><td>「名落孫山」即比喻應考不中、榜上無名。</td></tr><tr><td class="c">25－1</td><td class="c ans">D</td><td>齊人「取金之時，不見人，徒見金」，正是被利慾蒙蔽心智的寫照。</td></tr><tr><td class="c">25－2</td><td class="c ans">C</td><td>攫：抓取、搶奪（注釋⑦）。</td></tr><tr><td class="c">25－3</td><td class="c ans">A</td><td>徒：只（注釋⑩）。齊人眼中只看見金子，看不見在場的人。</td></tr><tr><td class="c">25－4</td><td class="c ans">A</td><td>巡吏逮捕的對象，是那個伸手搶奪金子後逃跑的齊人。</td></tr>
+</tbody></table></div>
+    </details>
+  </section>
+  <footer>古文今讀 21–25 課　虛字整理與選擇題</footer>
+</main>
+<script>
+
+(function () {
+  var qs = Array.prototype.slice.call(document.querySelectorAll('li.q'));
+  var mode = 'practice', submitted = false;
+  var $ = function (id) { return document.getElementById(id); };
+  var LAB = { p: '', l1: '', l2: '', l3: '', l4: '', l5: '' };
+
+  function reveal(q) {
+    var chosen = q.getAttribute('data-chosen'), ans = q.getAttribute('data-a');
+    var exp = q.querySelector('.exp'), res = q.querySelector('.res');
+    q.classList.add('done');
+    Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (b) {
+      var k = b.getAttribute('data-k'), m = b.querySelector('.mark');
+      b.classList.remove('sel');
+      b.setAttribute('aria-disabled', 'true');
+      if (k === ans) { b.classList.add('right'); m.textContent = '✓ 正確答案'; }
+      else if (k === chosen) { b.classList.add('wrong'); m.textContent = '✗'; }
+    });
+    exp.hidden = false;
+    if (!chosen) { exp.className = 'exp no'; res.textContent = '未作答，正確答案是 ' + ans + '。'; }
+    else if (chosen === ans) { exp.className = 'exp ok'; res.textContent = '答對了！'; }
+    else { exp.className = 'exp no'; res.textContent = '答錯了，正確答案是 ' + ans + '。'; }
+  }
+
+  function stats() {
+    var answered = 0, correct = 0, secs = {};
+    qs.forEach(function (q) {
+      var s = q.getAttribute('data-sec'), pts = +q.getAttribute('data-pts');
+      secs[s] = secs[s] || { n: 0, a: 0, c: 0, pts: 0, score: 0 };
+      secs[s].n++;
+      var ch = q.getAttribute('data-chosen');
+      if (ch) { answered++; secs[s].a++; }
+      var revealed = q.classList.contains('done');
+      if (revealed && ch === q.getAttribute('data-a')) { correct++; secs[s].c++; secs[s].score += pts; }
+      secs[s].pts += pts;
+    });
+    var revealedAny = qs.some(function (q) { return q.classList.contains('done'); });
+    $('stats').textContent = '已作答 ' + answered + '／' + qs.length + (revealedAny ? '　答對 ' + correct : '');
+    Array.prototype.forEach.call(document.querySelectorAll('.sec-score'), function (el) {
+      var d = secs[el.getAttribute('data-sec')];
+      if (!d) return;
+      var txt = '本單元已作答 ' + d.a + '／' + d.n + ' 題';
+      var allRevealed = qs.filter(function (q) { return q.getAttribute('data-sec') === el.getAttribute('data-sec'); })
+        .every(function (q) { return q.classList.contains('done'); });
+      if (d.c > 0 || allRevealed || (mode === 'practice' && d.a > 0)) txt += '，答對 ' + d.c + ' 題，得分 ' + d.score + '／' + d.pts;
+      el.textContent = txt;
+    });
+  }
+
+  function reset() {
+    submitted = false;
+    qs.forEach(function (q) {
+      q.removeAttribute('data-chosen'); q.classList.remove('done');
+      q.querySelector('.exp').hidden = true;
+      Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (b) {
+        b.classList.remove('sel', 'right', 'wrong'); b.removeAttribute('aria-disabled');
+        b.querySelector('.mark').textContent = '';
+      });
+    });
+    stats();
+  }
+
+  function setMode(m) {
+    if (m === mode) return;
+    var any = qs.some(function (q) { return q.getAttribute('data-chosen'); });
+    if (any && !window.confirm('切換模式會清除目前的作答，要繼續嗎？')) return;
+    mode = m;
+    $('m-practice').classList.toggle('on', m === 'practice');
+    $('m-test').classList.toggle('on', m === 'test');
+    $('m-practice').setAttribute('aria-pressed', m === 'practice');
+    $('m-test').setAttribute('aria-pressed', m === 'test');
+    $('submit').hidden = m !== 'test';
+    reset();
+  }
+
+  qs.forEach(function (q) {
+    Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (b) {
+      b.addEventListener('click', function () {
+        if (q.classList.contains('done')) return;
+        q.setAttribute('data-chosen', b.getAttribute('data-k'));
+        if (mode === 'practice') { reveal(q); }
+        else {
+          Array.prototype.forEach.call(q.querySelectorAll('button.opt'), function (o) { o.classList.toggle('sel', o === b); });
+        }
+        stats();
+      });
+    });
+  });
+
+  $('m-practice').addEventListener('click', function () { setMode('practice'); });
+  $('m-test').addEventListener('click', function () { setMode('test'); });
+  $('reset').addEventListener('click', function () {
+    var any = qs.some(function (q) { return q.getAttribute('data-chosen'); });
+    if (!any || window.confirm('要清除目前的作答，重新開始嗎？')) reset();
+  });
+  $('submit').addEventListener('click', function () {
+    var left = qs.filter(function (q) { return !q.getAttribute('data-chosen'); }).length;
+    if (left > 0 && !window.confirm('還有 ' + left + ' 題沒作答，確定要交卷嗎？')) return;
+    submitted = true;
+    qs.forEach(function (q) { if (!q.classList.contains('done')) reveal(q); });
+    stats();
+    var first = document.querySelector('li.q .exp.no');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  stats();
+})();
+
+</script>
+</body>
+</html>
